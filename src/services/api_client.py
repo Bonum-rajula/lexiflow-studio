@@ -89,3 +89,14 @@ class APIClient:
         data = response.json()
         logger.info(f"✅ Answer generated using {data.get('chunks_used', 0)} chunks.")
         return AnswerResponse(**data)
+
+    # Add to APIClient class in src/services/api_client.py
+
+    def health(self) -> bool:
+        """Check if the backend API is reachable."""
+        try:
+            url = f"{self.base_url}/health"
+            response = requests.get(url, timeout=5.0)
+            return response.status_code == 200
+        except Exception:
+            return False
