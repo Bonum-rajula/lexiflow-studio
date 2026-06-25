@@ -1,4 +1,4 @@
-# src/core/session_state.py
+# src/core/session_state.py (UPDATED)
 import streamlit as st
 from typing import List, Dict, Any, Optional
 
@@ -10,17 +10,20 @@ class SessionKeys:
     PROCESSING = "processing"
     UPLOAD_STATUS = "upload_status"
     API_HEALTHY = "api_healthy"
-    CURRENT_ANSWER = "current_answer"      # Store the last answer for display
+    CURRENT_ANSWER = "current_answer"
     CURRENT_CHUNKS = "current_chunks"
     CURRENT_CRITIQUE = "current_critique"
+    # NEW: Toast & error states
+    LAST_TOAST = "last_toast"          # Avoid duplicate toasts on rerun
+    ERROR_COUNT = "error_count"        # Track consecutive errors
 
 
 def init_session_state():
     """Initialize all session state variables with default values."""
     if SessionKeys.CONVERSATION not in st.session_state:
-        st.session_state[SessionKeys.CONVERSATION] = []  # list of {"role": "user"/"assistant", "content": str}
+        st.session_state[SessionKeys.CONVERSATION] = []
     if SessionKeys.UPLOADED_DOCS not in st.session_state:
-        st.session_state[SessionKeys.UPLOADED_DOCS] = []  # list of dicts with filename, chunks, etc.
+        st.session_state[SessionKeys.UPLOADED_DOCS] = []
     if SessionKeys.PROCESSING not in st.session_state:
         st.session_state[SessionKeys.PROCESSING] = False
     if SessionKeys.UPLOAD_STATUS not in st.session_state:
@@ -33,3 +36,7 @@ def init_session_state():
         st.session_state[SessionKeys.CURRENT_CHUNKS] = []
     if SessionKeys.CURRENT_CRITIQUE not in st.session_state:
         st.session_state[SessionKeys.CURRENT_CRITIQUE] = None
+    if SessionKeys.LAST_TOAST not in st.session_state:
+        st.session_state[SessionKeys.LAST_TOAST] = None
+    if SessionKeys.ERROR_COUNT not in st.session_state:
+        st.session_state[SessionKeys.ERROR_COUNT] = 0
